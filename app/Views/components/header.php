@@ -15,15 +15,23 @@
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div><!-- End Search Bar -->
+    <!-- Add the Discount Notification -->
+    <?php if (session()->get('diskon')): ?>
+        <div class="diskon-info alert alert-success flex mb-0 py-0">
+          <p class="my-2">Diskon Hari ini: <?= session()->get('diskon')['nominal']; ?> per item</p>
+        </div>
+    <?php endif; ?>
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+        
 
         <li class="nav-item d-block d-lg-none">
           <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
+
 
         <li class="nav-item dropdown">
 

@@ -6,15 +6,18 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\UserModel;
+use App\Models\DiskonModel;
 
 class AuthController extends BaseController
 {
     protected $user;
+    protected $diskon;
 
     function __construct()
     {
         helper('form');
         $this->user = new UserModel();
+        $this->diskon = new DiskonModel();
     }
 
     public function login()
@@ -33,6 +36,17 @@ class AuthController extends BaseController
 
                 if($dataUser) {
                     if (password_verify($password, $dataUser['password'])) {
+                        // Ambil tanggal hari ini
+                        $today = date('Y-m-d');
+                        
+                        // Cari diskon yang berlaku pada tanggal ini
+                        $diskon = $this->diskon->getDiskonByDate($today);
+
+                        // Simpan data diskon ke session jika ada
+                        if ($diskon) {
+                            session()->set('diskon', $diskon); // Menyimpan data diskon di session
+                        }
+
                         session()->set([
                             'username' => $dataUser['username'],
                             'role' => $dataUser['role'],
