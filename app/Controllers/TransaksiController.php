@@ -27,20 +27,57 @@ class TransaksiController extends BaseController
 
     public function index()
     {
-        $data['items'] = $this->cart->contents();
-        $data['total'] = $this->cart->total();
-        return view('v_keranjang', $data);
+        // Ambil item dari cart
+    $data['items'] = $this->cart->contents();
+
+    // Cek apakah ada diskon yang disimpan di session
+    $diskon = session()->get('diskon');
+    $totalDiskon = 0;
+    $totalHarga = 0;
+
+    // Loop untuk menghitung harga total setelah diskon
+    foreach ($data['items'] as $item) {
+        // Jika ada diskon, hitung harga setelah diskon
+        $price = $item['price']; // Default price
+        if ($diskon) {
+            $price -= $diskon['nominal']; // Kurangi dengan diskon
+        }
+        $subtotal = $item['qty'] * $price;
+        $totalHarga += $subtotal;  // Tambahkan subtotal ke total harga
+    }
+
+    // Menyimpan total harga yang sudah didiskon
+    $data['total'] = $totalHarga;
+
+    return view('v_keranjang', $data);
     }
 
     public function cart_add()
     {
-        $this->cart->insert(array(
-            'id'        => $this->request->getPost('id'),
-            'qty'       => 1,
-            'price'     => $this->request->getPost('harga'),
-            'name'      => $this->request->getPost('nama'),
-            'options'   => array('foto' => $this->request->getPost('foto'))
-        ));
+        $productId = $this->request->getPost('id');
+        $quantity = 1;
+        $price = $this->request->getPost('harga');
+        $name = $this->request->getPost('nama');
+        $foto = $this->request->getPost('foto');
+
+        // Get diskon data from session
+        $diskon = session()->get('diskon');  // Retrieve diskon from session
+
+        // If there's a valid diskon, apply it to the price
+        if ($diskon) {
+            $price -= $diskon['nominal'];  // Subtract the discount amount from the price
+        }
+
+        // Insert the product into the cart with the discounted price
+        $this->cart->insert([
+            'id'        => $productId,
+            'qty'       => $quantity,
+            'price'     => $price,  // Discounted price
+            'name'      => $name,
+            'options'   => ['foto' => $foto]
+        ]);
+
+        
         session()->setflashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
         return redirect()->to(base_url('/'));
     }
