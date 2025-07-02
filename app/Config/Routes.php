@@ -51,5 +51,10 @@ $routes->group('diskon', ['filter' => 'auth'], function ($routes) {
     $routes->post('update/(:any)', 'DiskonController::update/$1');
 });
 
+$routes->group('pembelian', ['filter' => 'auth'], function ($routes) { 
+    $routes->get('', 'PembelianController::index');
+    $routes->get('update-status/(:any)', 'PembelianController::updateStatus/$1');
+});
+
 
 $routes->resource('api', ['controller' => 'apiController']);

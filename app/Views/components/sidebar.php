@@ -39,6 +39,16 @@
         </li><!-- End Diskon Nav -->
         <?php endif; ?>
 
+      <!-- Transaction Menu for Admin -->
+        <?php if (session()->get('role') == 'admin'): ?>
+        <li class="nav-item">
+            <a class="nav-link <?= (uri_string() == 'pembelian') ? "" : "collapsed" ?>" href="pembelian">
+                <i class="bi bi-bag-check"></i>
+                <span>Pembelian</span>
+            </a>
+        </li><!-- End Pembelian Nav -->
+        <?php endif; ?>
+
       <li class="nav-item">
           <a class="nav-link <?php echo (uri_string() == 'profile') ? "" : "collapsed" ?>" href="profile">
               <i class="bi bi-person"></i>
