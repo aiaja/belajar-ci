@@ -23,6 +23,16 @@ class DiskonController extends BaseController
 
     public function create()
     {
+        $tanggal = $this->request->getPost('tanggal');
+        $nominal = $this->request->getPost('nominal');
+
+            $existingDiskon = $this->diskon->where('tanggal', $tanggal)->first();
+
+        if ($existingDiskon) {
+        // If a discount already exists for the same date, set an error message
+        return redirect()->back()->with('failed', 'Diskon untuk tanggal ini sudah ada!');
+    } 
+
         $dataForm = [
             'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
@@ -38,7 +48,6 @@ class DiskonController extends BaseController
         $dataDiskon = $this->diskon->find($id);
 
         $dataForm = [
-            'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
             'updated_at' => date('Y-m-d H:i:s')
         ];

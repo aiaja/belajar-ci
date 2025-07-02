@@ -1,5 +1,9 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('content') ?> 
+
+
+<!-- dump or print the response data $diskon -->
+
 <?php
 if (session()->getFlashData('success')) {
 ?>
@@ -62,11 +66,14 @@ if (session()->getFlashData('failed')) {
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="date">Tanggal</label>
-                                    <input type="date" name="tanggal" class="form-control" id="date" value="<?= $diskon['tanggal'] ?>" placeholder="Tanggal" required>
+                                    <input type="date" name="tanggal" class="form-control" id="tanggal" value="<?= old('tanggal', $diskon['tanggal']) ?>" placeholder="Tanggal" disabled required>
+                                    <!-- echo data readonly for test print the data using tag p -->
+                                    
+
                                 </div>
                                 <div class="form-group">
                                     <label for="nominal">Nominal</label>
-                                    <input type="number" name="nominal" class="form-control" id="nominal" value="<?= $diskon['nominal'] ?>" placeholder="Nominal Diskon" required>
+                                    <input type="number" name="nominal" class="form-control" id="nominal" value="<?= old('nominal', $diskon['nominal']) ?>" placeholder="Nominal Diskon" required>
                                 </div>
                             </div>
                             <div class="modal-footer">

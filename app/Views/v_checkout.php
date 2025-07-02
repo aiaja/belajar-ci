@@ -153,7 +153,7 @@ $(document).ready(function() {
     });  
     
     function hitungTotal() {
-        total = ongkir + <?= $totalDiskon ?>;git 
+        total = ongkir + <?= $totalDiskon ?>;
 
         $("#ongkir").val(ongkir);
         $("#total").html("IDR " + total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
