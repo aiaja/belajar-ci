@@ -178,15 +178,18 @@ class TransaksiController extends BaseController
 
     public function buy()
     {
-        if ($this->request->getPost()) { 
+        if ($this->request->getPost()) {  
+            $diskon = session()->get('diskon');
+            $totalDiskon = $diskon ? $diskon['nominal'] : 0; 
+
             $dataForm = [
                 'username' => $this->request->getPost('username'),
-                'total_harga' => $this->request->getPost('total_harga'),
-                'alamat' => $this->request->getPost('alamat'),
-                'ongkir' => $this->request->getPost('ongkir'),
-                'status' => 0,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
+            'total_harga' => $this->request->getPost('total_harga'),  
+            'alamat' => $this->request->getPost('alamat'),
+            'ongkir' => $this->request->getPost('ongkir'),
+            'status' => 0,  // Status set to 0 (not completed yet)
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
             ];
 
             $this->transaction->insert($dataForm);
@@ -198,7 +201,7 @@ class TransaksiController extends BaseController
                     'transaction_id' => $last_insert_id,
                     'product_id' => $value['id'],
                     'jumlah' => $value['qty'],
-                    'diskon' => 0,
+                    'diskon' => $value['price'],
                     'subtotal_harga' => $value['qty'] * $value['price'],
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")

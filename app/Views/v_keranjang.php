@@ -30,9 +30,9 @@ if (session()->getFlashData('success')) {
             foreach ($items as $index => $item) :
                 // Check if there is a discount applied
                 $discountedPrice = $item['price']; // Default price
-                if (session()->get('diskon')) {
-                    $discountedPrice = $item['price'] - session()->get('diskon')['nominal']; // Apply discount
-                }
+                // if (session()->get('diskon')) {
+                //     $discountedPrice = $item['price'] - session()->get('diskon')['nominal']; // Apply discount
+                // }
         ?>
                 <tr>
                     <td><?php echo $item['name'] ?></td>
